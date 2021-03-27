@@ -26,6 +26,31 @@ class Address(Base):
     person_id = Column(Integer, ForeignKey('person.id'))
     person = relationship(Person)
 
+class Media(Base):
+    __tablename__ = 'media'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    tipo = Column(Enum(ABC))
+    url = Column(String(250))
+    post_id = Column(Integer, nullable=False)
+       
+class Post(Base):
+    __tablename__ = 'post'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('person.id'))
+    
+class Comment(Base):
+    __tablename__ = 'comment'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    comment_text = Column(String(250))
+    author_id = Column(Integer, ForeignKey('person.id'))
+    post_id = Column(Integer, ForeignKey('person.id'))
+    
     def to_dict(self):
         return {}
 
