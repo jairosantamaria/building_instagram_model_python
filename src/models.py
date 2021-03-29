@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Enum
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -18,15 +18,13 @@ class User(Base):
     lastname = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
 
-#class Address(Base):
-   # __tablename__ = 'address'
+class Post(Base):
+    __tablename__ = 'post'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
-    #street_name = Column(String(250))
-    #street_number = Column(String(250))
-    #post_code = Column(String(250), nullable=False)
-    #person_id = Column(Integer, ForeignKey('person.id'))
-    #person = relationship(Person)
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
 class Media(Base):
     __tablename__ = 'media'
@@ -35,37 +33,28 @@ class Media(Base):
     id = Column(Integer, primary_key=True)
     tipo = Column(Enum)
     url = Column(String(250), nullable=False)
-    post_id = Column(Integer, ForeignKey('person.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))
     post = relationship(Post)
-       
-class Post(Base):
-    __tablename__ = 'post'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('person.id'))
-    post = relationship(User)
-    
+         
 class Comment(Base):
     __tablename__ = 'comment'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     comment_text = Column(String(250), nullable=False)
-    author_id = Column(Integer, ForeignKey('person.id'))
-    post_id = Column(Integer, ForeignKey('person.id'))
+    author_id = Column(Integer, ForeignKey('user.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))
     user = relationship(User)
     post = relationship(Post)
-
 
 class Follower(Base):
     __tablename__ = 'follower'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    user_from_id = (Integer, ForeignKey('person.id'))
-    user_to_id = (Integer, ForeignKey('person.id'))
-    follower = relationship(User)
+    user_from_id = (Integer, ForeignKey('user.id'))
+    user_to_id = (Integer, ForeignKey('user.id'))
+    user = relationship(User)
     
     
     def to_dict(self):

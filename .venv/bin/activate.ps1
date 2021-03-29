@@ -42,11 +42,11 @@ if (!$env:VIRTUAL_ENV_DISABLE_PROMPT) {
     }
     $function:_old_virtual_prompt = $function:prompt
 
-    if ("(exercise-instagram-data-modeling) " -ne "") {
+    if ("(building_instagram_model_python) " -ne "") {
         function global:prompt {
             # Add the custom prefix to the existing prompt
             $previous_prompt_value = & $function:_old_virtual_prompt
-            ("(exercise-instagram-data-modeling) " + $previous_prompt_value)
+            ("(building_instagram_model_python) " + $previous_prompt_value)
         }
     }
     else {
